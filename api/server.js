@@ -18,7 +18,7 @@ server.use(cors());
 // server.use('/api/users', usersRouter);
 
 server.get('/', (req, res) => {
-  res.send("test test test");
+  res.send("test test test :)");
 });
 
 module.exports = server;

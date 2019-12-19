@@ -1,21 +1,22 @@
 const jwt = require("jsonwebtoken"); // installed this
 
+const Users = require("../users/users-model.js")
 module.exports = (req, res, next) => {
-//   const { authorization } = req.headers;
+    const token = req.headers.authorization; 
 
-//   if (authorization) {
-//     const secret = process.env.JWT_SECRET || "is it secret, is it safe?";
+    console.log('token on mw', token)
+        if(token) {
+          jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+              if(err){
+                console.log('failed verify', err)
+                res.status(401).json({message: "the token is invalid"})
+              } else {
+                req.decodedToken = decodedToken;
+                next();
+              }
+          })
+        } else {
+          res.status(400).json({message: "please enter your login credentails and try again"})
 
-//     jwt.verify(authorization, secret, function(err, decodedToken) {
-//       if (err) {
-//         res.status(401).json({ message: "Invalid Token" });
-//       } else {
-//         req.token = decodedToken;
-
-//         next();
-//       }
-//     });
-//   } else {
-//     res.status(400).json({ message: "Please login and try again" });
-//   }
+        }
 };
